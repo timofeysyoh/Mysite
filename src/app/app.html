@@ -7,29 +7,20 @@
 
 <main class="page">
   <div class="card-stack">
-    <section class="banner-card" aria-label="Quick actions">
-      <div class="banner-card__content">
-        <div class="banner-card__word-card" aria-label="Personal qualities">
-          <div class="banner-card__word-track">
-            <div class="banner-card__word">Enthusiast</div>
-            <div class="banner-card__word">Responsible</div>
-            <div class="banner-card__word">Creative</div>
-            <div class="banner-card__word">Enthusiast</div>
-          </div>
-        </div>
-
+    <section class="profile-card" aria-labelledby="profile-title">
+      <div class="profile-card__surface">
         <button
-          class="banner-card__theme-shell"
+          class="profile-card__theme-shell"
           type="button"
           aria-label="Change theme"
           [attr.aria-pressed]="isLightThemePreview"
-          [class.banner-card__theme-shell--light]="isLightThemePreview"
+          [class.profile-card__theme-shell--light]="isLightThemePreview"
           (click)="toggleThemePreview()"
         >
-          <span class="banner-card__theme-background">
-            <span class="banner-card__theme-icon">
-              <span class="banner-card__theme-sun-moon"></span>
-              <span class="banner-card__theme-rays" aria-hidden="true">
+          <span class="profile-card__theme-background">
+            <span class="profile-card__theme-icon">
+              <span class="profile-card__theme-sun-moon"></span>
+              <span class="profile-card__theme-rays" aria-hidden="true">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -42,11 +33,7 @@
             </span>
           </span>
         </button>
-      </div>
-    </section>
 
-    <section class="profile-card" aria-label="Profile card">
-      <div class="profile-card__surface">
         <div class="profile-card__image-container">
           <img
             class="profile-card__image"
@@ -56,8 +43,7 @@
         </div>
 
         <div class="profile-card__content">
-          <h1 class="profile-card__title shine">Timofey Syoh</h1>
-          <p class="profile-card__subtitle">Welcome to my website</p>
+          <h1 id="profile-title" class="profile-card__title shine">Welcome to my website</h1>
         </div>
 
         <svg
@@ -80,8 +66,11 @@
         </svg>
       </div>
 
-      <div class="profile-card__social-block">
-        <p class="profile-card__social-title">My social networks</p>
+      <div class="profile-card__bio">
+        <p class="profile-card__name">Timofey Syoh</p>
+        <p class="profile-card__description">
+          I develop applications and digital services that enhance aesthetics and functionality.
+        </p>
 
         <div class="social-list" aria-label="Social network links">
           <a class="social-button social-button--instagram" href="#" aria-label="Instagram">
@@ -119,139 +108,141 @@
       </div>
     </section>
 
-    <section class="skills-card" aria-labelledby="skills-title">
-      <div class="skills-card__orb skills-card__orb--bottom-large" aria-hidden="true"></div>
-      <div class="skills-card__orb skills-card__orb--bottom-small" aria-hidden="true"></div>
-      <div class="skills-card__orb skills-card__orb--top-right" aria-hidden="true"></div>
-      <div class="skills-card__orb skills-card__orb--top-left" aria-hidden="true"></div>
+    <div class="skills-tools-row">
+      <section class="skills-card" aria-labelledby="skills-title">
+        <div class="skills-card__orb skills-card__orb--bottom-large" aria-hidden="true"></div>
+        <div class="skills-card__orb skills-card__orb--bottom-small" aria-hidden="true"></div>
+        <div class="skills-card__orb skills-card__orb--top-right" aria-hidden="true"></div>
+        <div class="skills-card__orb skills-card__orb--top-left" aria-hidden="true"></div>
 
-      <div class="skills-card__content">
-        <p id="skills-title" class="skills-card__eyebrow">Skills</p>
+        <div class="skills-card__content">
+          <p id="skills-title" class="skills-card__eyebrow">Skills</p>
 
-        <div class="skills-card__list" aria-label="Skills list">
-          <p>UX &amp; UI Design</p>
-          <p>Vibe developer</p>
-          <p>Technical Assistant</p>
-          <p>Frontend Developer</p>
-          <p>Web developer</p>
-          <p>Web Testing</p>
-        </div>
+          <div class="skills-card__list" aria-label="Skills list">
+            <p>UX &amp; UI Design</p>
+            <p>Vibe developer</p>
+            <p>Technical Assistant</p>
+            <p>Frontend Developer</p>
+            <p>Web developer</p>
+            <p>Web Testing</p>
+          </div>
 
-        <div class="skills-card__button-wrap">
-          <button class="skills-card__button" type="button">
-            <svg
-              class="skills-card__button-grid"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              <defs>
-                <pattern
-                  id="skillsDottedGrid"
-                  width="30"
-                  height="30"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <circle cx="2" cy="2" r="1" fill="rgba(255, 255, 255, 0.16)"></circle>
-                </pattern>
-              </defs>
-              <rect width="100" height="100" fill="url(#skillsDottedGrid)"></rect>
-            </svg>
+          <div class="skills-card__button-wrap">
+            <button class="skills-card__button" type="button" (click)="openSkillsModal()">
+              <svg
+                class="skills-card__button-grid"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <defs>
+                  <pattern
+                    id="skillsDottedGrid"
+                    width="30"
+                    height="30"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <circle cx="2" cy="2" r="1" fill="rgba(255, 255, 255, 0.16)"></circle>
+                  </pattern>
+                </defs>
+                <rect width="100" height="100" fill="url(#skillsDottedGrid)"></rect>
+              </svg>
 
-            <span class="skills-card__button-blob" aria-hidden="true"></span>
-            <span class="skills-card__button-inner">See more</span>
-          </button>
+              <span class="skills-card__button-blob" aria-hidden="true"></span>
+              <span class="skills-card__button-inner">See more</span>
+            </button>
 
-          <div class="skills-card__button-shadow" aria-hidden="true"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="tools-card" aria-labelledby="tools-title">
-      <div class="tools-card__orb tools-card__orb--cool" aria-hidden="true"></div>
-      <div class="tools-card__orb tools-card__orb--warm" aria-hidden="true"></div>
-
-      <div class="tools-card__content">
-        <p id="tools-title" class="tools-card__title">Tools I use over +20</p>
-
-        <div class="tools-card__carousel">
-          <div class="tools-card__viewport scroll-1" aria-label="Tools categories">
-            <div class="tools-card__track">
-              @for (category of toolCategories; track category.title) {
-                <article class="tools-panel">
-                  <p class="tools-panel__category">{{ category.title }}</p>
-
-                  <ul class="tools-panel__list" aria-label="{{ category.title }}">
-                    @for (tool of category.items; track tool.name) {
-                      <li class="tools-panel__item">
-                        <span
-                          class="tools-panel__icon"
-                          [style.--icon-glow]="tool.iconGlow"
-                          [style.--icon-surface]="tool.iconSurface"
-                          aria-hidden="true"
-                        >
-                          @if (!tool.iconFailed) {
-                            <img
-                              class="tools-panel__icon-image"
-                              [src]="tool.icon"
-                              [alt]="tool.name + ' logo'"
-                              loading="lazy"
-                              decoding="async"
-                              (error)="tool.iconFailed = true"
-                            />
-                          } @else {
-                            <span class="tools-panel__icon-fallback">
-                              <svg
-                                class="tools-panel__icon-fallback-svg"
-                                viewBox="0 0 64 64"
-                                aria-hidden="true"
-                              >
-                                <rect
-                                  x="16"
-                                  y="16"
-                                  width="32"
-                                  height="32"
-                                  rx="10"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="4"
-                                />
-                                <path
-                                  d="M24 32h16M32 24v16"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-linecap="round"
-                                  stroke-width="4"
-                                />
-                              </svg>
-                            </span>
-                          }
-                        </span>
-                        <span class="tools-panel__name">{{ tool.name }}</span>
-                      </li>
-                    }
-                  </ul>
-                </article>
-              }
-            </div>
+            <div class="skills-card__button-shadow" aria-hidden="true"></div>
           </div>
         </div>
+      </section>
 
-        <button class="tools-card__footer" type="button">
-          <span>more</span>
-          <svg class="tools-card__footer-icon" viewBox="0 0 100 100" aria-hidden="true">
-            <path
-              d="M33.9,46V29.9a16.1,16.1,0,0,1,32.2,0M50,62v8.1m-24.1,16H74.1a8,8,0,0,0,8-8V54a8,8,0,0,0-8-8H25.9a8,8,0,0,0-8,8V78.1A8,8,0,0,0,25.9,86.1Z"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="8"
-            />
-          </svg>
-        </button>
-      </div>
-    </section>
+      <section class="tools-card" aria-labelledby="tools-title">
+        <div class="tools-card__orb tools-card__orb--cool" aria-hidden="true"></div>
+        <div class="tools-card__orb tools-card__orb--warm" aria-hidden="true"></div>
+
+        <div class="tools-card__content">
+          <p id="tools-title" class="tools-card__title">Tools I use over +20</p>
+
+          <div class="tools-card__carousel">
+            <div class="tools-card__viewport scroll-1" aria-label="Tools categories">
+              <div class="tools-card__track">
+                @for (category of toolCategories; track category.title) {
+                  <article class="tools-panel">
+                    <p class="tools-panel__category">{{ category.title }}</p>
+
+                    <ul class="tools-panel__list" aria-label="{{ category.title }}">
+                      @for (tool of category.items; track tool.name) {
+                        <li class="tools-panel__item">
+                          <span
+                            class="tools-panel__icon"
+                            [style.--icon-glow]="tool.iconGlow"
+                            [style.--icon-surface]="tool.iconSurface"
+                            aria-hidden="true"
+                          >
+                            @if (!tool.iconFailed) {
+                              <img
+                                class="tools-panel__icon-image"
+                                [src]="tool.icon"
+                                [alt]="tool.name + ' logo'"
+                                loading="lazy"
+                                decoding="async"
+                                (error)="tool.iconFailed = true"
+                              />
+                            } @else {
+                              <span class="tools-panel__icon-fallback">
+                                <svg
+                                  class="tools-panel__icon-fallback-svg"
+                                  viewBox="0 0 64 64"
+                                  aria-hidden="true"
+                                >
+                                  <rect
+                                    x="16"
+                                    y="16"
+                                    width="32"
+                                    height="32"
+                                    rx="10"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="4"
+                                  />
+                                  <path
+                                    d="M24 32h16M32 24v16"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-width="4"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                          </span>
+                          <span class="tools-panel__name">{{ tool.name }}</span>
+                        </li>
+                      }
+                    </ul>
+                  </article>
+                }
+              </div>
+            </div>
+          </div>
+
+          <button class="tools-card__footer" type="button">
+            <span>more</span>
+            <svg class="tools-card__footer-icon" viewBox="0 0 100 100" aria-hidden="true">
+              <path
+                d="M33.9,46V29.9a16.1,16.1,0,0,1,32.2,0M50,62v8.1m-24.1,16H74.1a8,8,0,0,0,8-8V54a8,8,0,0,0-8-8H25.9a8,8,0,0,0-8,8V78.1A8,8,0,0,0,25.9,86.1Z"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="8"
+              />
+            </svg>
+          </button>
+        </div>
+      </section>
+    </div>
 
     <section class="projects-card" aria-labelledby="projects-title">
       <div class="projects-card__content">
@@ -262,12 +253,20 @@
             alt=""
             aria-hidden="true"
           />
-          <h2 id="projects-title" class="projects-card__title">Projects</h2>
+          <h2 id="projects-title" class="projects-card__title">Project</h2>
         </div>
 
         <div class="projects-card__folders">
           @for (project of projects; track project.title) {
-            <article class="project-folder">
+            <article
+              class="project-folder"
+              role="button"
+              tabindex="0"
+              [attr.aria-label]="'Open ' + project.title"
+              (click)="openProjectModal(project)"
+              (keydown.enter)="openProjectModal(project)"
+              (keydown.space)="openProjectModal(project); $event.preventDefault()"
+            >
               <div class="project-folder__stack">
                 <div class="project-folder__cap"></div>
                 <div class="project-folder__sheet project-folder__sheet--4"></div>
@@ -282,5 +281,373 @@
         </div>
       </div>
     </section>
+
+    <section class="work-card" aria-labelledby="work-title">
+      <div class="work-card__content">
+        <div class="work-card__header">
+          <img
+            class="work-card__briefcase"
+            src="/briefcase.png"
+            alt=""
+            aria-hidden="true"
+          />
+          <h2 id="work-title" class="work-card__title">Work experience</h2>
+        </div>
+
+        <div class="work-card__list">
+          @for (experience of workExperiences; track experience.company) {
+            <article class="work-experience">
+              <span class="work-experience__icon" aria-hidden="true">
+                <img
+                  class="work-experience__icon-image"
+                  [src]="experience.icon"
+                  [alt]="experience.company + ' logo'"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </span>
+
+              <div class="work-experience__body">
+                <div class="work-experience__meta">
+                  <p class="work-experience__company">{{ experience.company }}</p>
+                  <span class="work-experience__badge">Freelance</span>
+                </div>
+
+                <div class="work-experience__role-row">
+                  <p class="work-experience__role">{{ experience.role }}</p>
+                  <button
+                    class="work-experience__toggle"
+                    type="button"
+                    [attr.aria-expanded]="isWorkExperienceExpanded(experience.company)"
+                    [attr.aria-controls]="'work-description-' + experience.company"
+                    [class.work-experience__toggle--open]="isWorkExperienceExpanded(experience.company)"
+                    (click)="toggleWorkExperience(experience.company)"
+                  >
+                    <span class="sr-only">
+                      {{ isWorkExperienceExpanded(experience.company) ? 'Hide details' : 'Show details' }}
+                    </span>
+                  </button>
+                </div>
+
+                <div
+                  class="work-experience__details"
+                  [class.work-experience__details--open]="isWorkExperienceExpanded(experience.company)"
+                  [id]="'work-description-' + experience.company"
+                >
+                  <p>{{ experience.description }}</p>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-actions" aria-label="Profile actions">
+      <div class="skills-card__button-wrap">
+        <button class="skills-card__button" type="button">
+          <svg
+            class="skills-card__button-grid"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <pattern
+                id="resumeButtonGrid"
+                width="30"
+                height="30"
+                patternUnits="userSpaceOnUse"
+              >
+                <circle cx="2" cy="2" r="1" fill="rgba(255, 255, 255, 0.16)"></circle>
+              </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#resumeButtonGrid)"></rect>
+          </svg>
+
+          <span class="skills-card__button-blob" aria-hidden="true"></span>
+          <span class="skills-card__button-inner">Resume</span>
+        </button>
+
+        <div class="skills-card__button-shadow" aria-hidden="true"></div>
+      </div>
+
+      <div class="skills-card__button-wrap">
+        <button class="skills-card__button" type="button" (click)="openContactModal()">
+          <svg
+            class="skills-card__button-grid"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <pattern
+                id="contactButtonGrid"
+                width="30"
+                height="30"
+                patternUnits="userSpaceOnUse"
+              >
+                <circle cx="2" cy="2" r="1" fill="rgba(255, 255, 255, 0.16)"></circle>
+              </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#contactButtonGrid)"></rect>
+          </svg>
+
+          <span class="skills-card__button-blob" aria-hidden="true"></span>
+          <span class="skills-card__button-inner">Contact</span>
+        </button>
+
+        <div class="skills-card__button-shadow" aria-hidden="true"></div>
+      </div>
+    </div>
   </div>
 </main>
+
+@if (isSkillsModalOpen) {
+  <div class="skills-modal" role="dialog" aria-modal="true" aria-labelledby="skills-modal-title">
+    <div class="skills-modal__layout">
+      <button
+        class="skills-modal__close"
+        type="button"
+        aria-label="Close skills details"
+        (click)="closeSkillsModal()"
+      >
+        <span>Close</span>
+      </button>
+
+      <article class="skills-modal__panel">
+        <h2 id="skills-modal-title" class="sr-only">Skills details</h2>
+        <p>
+          I build clean, responsive and user-friendly interfaces for websites and hybrid applications.
+          My skills include frontend development, UX/UI design, web testing, technical support, and
+          cross-platform app development using web technologies. I focus on creating practical
+          solutions that are easy to use, visually clear, and technically reliable.
+        </p>
+      </article>
+    </div>
+  </div>
+}
+
+@if (isContactModalOpen) {
+  <div class="skills-modal contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+    <div class="skills-modal__layout contact-modal__layout">
+      <button
+        class="skills-modal__close"
+        type="button"
+        aria-label="Close contact form"
+        (click)="closeContactModal()"
+      >
+        <span>Close</span>
+      </button>
+
+      <article class="skills-modal__panel contact-modal__panel">
+        <h2 id="contact-modal-title" class="sr-only">Contact</h2>
+
+        <form class="contact-form" (submit)="submitContactForm($event)">
+          <div class="contact-form__grid">
+            <div class="contact-input">
+              <input
+                id="contact-full-name"
+                class="contact-input__field"
+                type="text"
+                placeholder=" "
+                autocomplete="name"
+                required
+              />
+              <label class="contact-input__label" for="contact-full-name">
+                type your full name<span class="contact-input__required">*</span>
+              </label>
+            </div>
+
+            <div class="contact-input contact-input--select">
+              <select
+                id="contact-purpose"
+                class="contact-input__field contact-input__select"
+                required
+              >
+                <option value="" selected disabled hidden></option>
+                <option value="Invitation to work">Invitation to work</option>
+                <option value="Ordering a service">Ordering a service</option>
+              </select>
+              <label class="contact-input__label" for="contact-purpose">Purpose of the appeal</label>
+            </div>
+
+            <div class="contact-input">
+              <input
+                id="contact-email"
+                class="contact-input__field"
+                type="email"
+                placeholder=" "
+                autocomplete="email"
+                required
+              />
+              <label class="contact-input__label" for="contact-email">
+                Type your email<span class="contact-input__required">*</span>
+              </label>
+            </div>
+
+            <div class="contact-input">
+              <input
+                id="contact-mobile"
+                class="contact-input__field"
+                type="tel"
+                placeholder=" "
+                autocomplete="tel"
+              />
+              <label class="contact-input__label" for="contact-mobile">Your mobile number</label>
+            </div>
+          </div>
+
+          <div class="contact-input contact-input--message">
+            <textarea
+              id="contact-message"
+              class="contact-input__field contact-input__field--textarea"
+              placeholder=" "
+              rows="5"
+              required
+            ></textarea>
+            <label class="contact-input__label" for="contact-message">
+              Describe your intentions<span class="contact-input__required">*</span>
+            </label>
+          </div>
+
+          <div class="contact-form__footer">
+            <div class="contact-form__consent">
+              <div class="contact-checkbox">
+                <input id="contact-consent" type="checkbox" required />
+                <label for="contact-consent" style="--size: 30px" aria-label="Accept statement">
+                  <svg viewBox="0 0 50 50" aria-hidden="true">
+                    <path d="M5 30 L 20 45 L 45 5"></path>
+                  </svg>
+                </label>
+              </div>
+
+              <label class="contact-form__consent-text" for="contact-consent">
+                I accept that the statement does not encourage fraud.
+              </label>
+            </div>
+
+            <button class="contact-send-button" type="submit">
+              <span>send</span>
+              <svg
+                class="contact-send-button__icon"
+                viewBox="0 0 38 15"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 7.519l-.939-.344h0l.939.344zm14.386-1.205l-.981-.192.981.192zm1.276 5.509l.537.843.148-.094.107-.139-.792-.611zm4.819-4.304l-.385-.923h0l.385.923zm7.227.707a1 1 0 0 0 0-1.414L31.343.448a1 1 0 0 0-1.414 0 1 1 0 0 0 0 1.414l5.657 5.657-5.657 5.657a1 1 0 0 0 1.414 1.414l6.364-6.364zM1 7.519l.554.833.029-.019.094-.061.361-.23 1.277-.77c1.054-.609 2.397-1.32 3.629-1.787.617-.234 1.17-.392 1.623-.455.477-.066.707-.008.788.034.025.013.031.021.039.034a.56.56 0 0 1 .058.235c.029.327-.047.906-.39 1.842l1.878.689c.383-1.044.571-1.949.505-2.705-.072-.815-.45-1.493-1.16-1.865-.627-.329-1.358-.332-1.993-.244-.659.092-1.367.305-2.056.566-1.381.523-2.833 1.297-3.921 1.925l-1.341.808-.385.245-.104.068-.028.018c-.011.007-.011.007.543.84zm8.061-.344c-.198.54-.328 1.038-.36 1.484-.032.441.024.94.325 1.364.319.45.786.64 1.21.697.403.054.824-.001 1.21-.09.775-.179 1.694-.566 2.633-1.014l3.023-1.554c2.115-1.122 4.107-2.168 5.476-2.524.329-.086.573-.117.742-.115s.195.038.161.014c-.15-.105.085-.139-.076.685l1.963.384c.192-.98.152-2.083-.74-2.707-.405-.283-.868-.37-1.28-.376s-.849.069-1.274.179c-1.65.43-3.888 1.621-5.909 2.693l-2.948 1.517c-.92.439-1.673.743-2.221.87-.276.064-.429.065-.492.057-.043-.006.066.003.155.127.07.099.024.131.038-.063.014-.187.078-.49.243-.94l-1.878-.689zm14.343-1.053c-.361 1.844-.474 3.185-.413 4.161.059.95.294 1.72.811 2.215.567.544 1.242.546 1.664.459a2.34 2.34 0 0 0 .502-.167l.15-.076.049-.028.018-.011c.013-.008.013-.008-.524-.852l-.536-.844.019-.012c-.038.018-.064.027-.084.032-.037.008.053-.013.125.056.021.02-.151-.135-.198-.895-.046-.734.034-1.887.38-3.652l-1.963-.384zm2.257 5.701l.791.611.024-.031.08-.101.311-.377 1.093-1.213c.922-.954 2.005-1.894 2.904-2.27l-.771-1.846c-1.31.547-2.637 1.758-3.572 2.725l-1.184 1.314-.341.414-.093.117-.025.032c-.01.013-.01.013.781.624zm5.204-3.381c.989-.413 1.791-.42 2.697-.307.871.108 2.083.385 3.437.385v-2c-1.197 0-2.041-.226-3.19-.369-1.114-.139-2.297-.146-3.715.447l.771 1.846z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </article>
+    </div>
+  </div>
+}
+
+@if (selectedProject) {
+  <div class="skills-modal" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
+    <div class="skills-modal__layout">
+      <button
+        class="skills-modal__close"
+        type="button"
+        aria-label="Close project details"
+        (click)="closeProjectModal()"
+      >
+        <span>Close</span>
+      </button>
+
+      <article class="skills-modal__panel project-modal__panel">
+        <h2 id="project-modal-title" class="project-modal__title">{{ selectedProject.title }}</h2>
+
+        @if (selectedProject.cards.length > 0) {
+          <div class="project-modal__cards">
+            @for (card of selectedProject.cards; track card.description) {
+              <article class="project-preview-card">
+                <div class="project-preview-card__dots" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+
+                <div class="project-preview-card__content">
+                  <p>{{ card.description }}</p>
+                </div>
+
+                <button
+                  class="project-preview-card__button"
+                  type="button"
+                  [disabled]="!card.image && !card.demoUrl"
+                  (click)="openProjectCard(card)"
+                >
+                  <span>Explore Now</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </button>
+
+                <div class="project-preview-card__glow" aria-hidden="true"></div>
+              </article>
+            }
+          </div>
+        }
+      </article>
+    </div>
+  </div>
+}
+
+@if (selectedProjectImage; as projectImage) {
+  <div class="project-image-modal" role="dialog" aria-modal="true" aria-label="Project image preview">
+    <div class="project-image-modal__layout">
+      <button
+        class="skills-modal__close"
+        type="button"
+        aria-label="Close project image"
+        (click)="closeProjectImage()"
+      >
+        <span>Close</span>
+      </button>
+
+      <div class="project-image-modal__panel">
+        <div class="project-image-modal__toolbar" aria-label="Image zoom controls">
+          <button type="button" (click)="zoomProjectImage(-0.2)" aria-label="Zoom out">-</button>
+          <button type="button" (click)="resetProjectImageZoom()" aria-label="Reset zoom">
+            {{ getProjectImageZoomPercent() }}%
+          </button>
+          <button type="button" (click)="zoomProjectImage(0.2)" aria-label="Zoom in">+</button>
+        </div>
+
+        <div
+          #projectImageViewport
+          class="project-image-modal__viewport"
+          [class.project-image-modal__viewport--dragging]="isProjectImageDragging"
+          (wheel)="onProjectImageWheel($event)"
+          (mousedown)="startProjectImageDrag($event, projectImageViewport)"
+          (mousemove)="dragProjectImage($event, projectImageViewport)"
+          (mouseup)="stopProjectImageDrag()"
+          (mouseleave)="stopProjectImageDrag()"
+        >
+          <img
+            class="project-image-modal__image"
+            [src]="projectImage.src"
+            [alt]="projectImage.title"
+            draggable="false"
+            [style.width.%]="projectImageZoom * 100"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+}

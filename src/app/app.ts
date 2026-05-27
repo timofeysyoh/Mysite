@@ -13,8 +13,27 @@ type ToolCategory = {
   title: string;
 };
 
-type ProjectItem = {
+type ProjectCard = {
+  demoUrl?: string;
+  description: string;
+  image?: string;
+};
+
+type ProjectImageModal = {
+  src: string;
   title: string;
+};
+
+type ProjectItem = {
+  cards: ProjectCard[];
+  title: string;
+};
+
+type WorkExperienceItem = {
+  company: string;
+  description: string;
+  icon: string;
+  role: string;
 };
 
 @Component({
@@ -23,12 +42,78 @@ type ProjectItem = {
   styleUrl: './app.scss'
 })
 export class App {
+  isContactModalOpen = false;
   isLightThemePreview = false;
+  isProjectImageDragging = false;
+  isSkillsModalOpen = false;
+  projectImageZoom = 1;
+  selectedProjectImage: ProjectImageModal | null = null;
+  selectedProject: ProjectItem | null = null;
+  private projectImageDragStart: { scrollLeft: number; scrollTop: number; x: number; y: number } | null = null;
   readonly projects: ProjectItem[] = [
-    { title: 'UX & UI Design' },
-    { title: 'Hybrid app' },
-    { title: 'Website' }
+    {
+      cards: [
+        {
+          description: 'Website interface design for a library',
+          image: '/Website%20interface%20design%20for%20a%20library.png'
+        },
+        {
+          description: 'Interface design for a loyalty card storage app',
+          image: '/card%20loyayti.png'
+        },
+        {
+          description: 'Portfolio website interface design',
+          image: '/portfolio.png'
+        },
+        {
+          description: 'Website interface design for my site',
+          image: '/mysite.png'
+        },
+        {
+          description: 'Examples of interface designs for the JogiCards app',
+          image: '/JogiCards.png'
+        },
+        {
+          description: 'Website interface design for my portfolio',
+          image: '/portfoliofigma.png'
+        }
+      ],
+      title: 'UX & UI Design'
+    },
+    { cards: [], title: 'Hybrid app' },
+    {
+      cards: [
+        {
+          demoUrl: '/demos/portfolio-site/index.html',
+          description: 'Website using Angular framework for JavaScript'
+        },
+        {
+          demoUrl: '/demos/project-workshop/index.html',
+          description: 'A site based on pure JavaScript without the use of components'
+        }
+      ],
+      title: 'Website'
+    }
   ];
+
+  readonly workExperiences: WorkExperienceItem[] = [
+    {
+      company: 'UPWORK',
+      description:
+        'Performed tasks related to interface development, technical project support, website setup, error correction, and assisting clients in implementing technical solutions.',
+      icon: '/Upwork.png',
+      role: 'Frontend Developer | Technical Assistant'
+    },
+    {
+      company: 'FIVERR',
+      description:
+        'Worked at Fiverr as a Frontend Developer and Digital Presence Specialist. Helped clients create and enhance their online presence through website development, visual optimization, profile customization, and overall brand visibility.',
+      icon: '/Fiverr.png',
+      role: 'Frontend Developer | Digital presence'
+    }
+  ];
+
+  readonly expandedWorkExperiences = new Set<string>();
 
   readonly toolCategories: ToolCategory[] = [
     {
@@ -175,5 +260,136 @@ export class App {
 
   toggleThemePreview(): void {
     this.isLightThemePreview = !this.isLightThemePreview;
+  }
+
+  openSkillsModal(): void {
+    this.isSkillsModalOpen = true;
+    this.syncPageScrollLock();
+  }
+
+  closeSkillsModal(): void {
+    this.isSkillsModalOpen = false;
+    this.syncPageScrollLock();
+  }
+
+  openContactModal(): void {
+    this.isContactModalOpen = true;
+    this.syncPageScrollLock();
+  }
+
+  closeContactModal(): void {
+    this.isContactModalOpen = false;
+    this.syncPageScrollLock();
+  }
+
+  submitContactForm(event: SubmitEvent): void {
+    event.preventDefault();
+    this.closeContactModal();
+  }
+
+  openProjectModal(project: ProjectItem): void {
+    this.selectedProject = project;
+    this.syncPageScrollLock();
+  }
+
+  closeProjectModal(): void {
+    this.selectedProject = null;
+    this.syncPageScrollLock();
+  }
+
+  openProjectImage(card: ProjectCard): void {
+    if (!card.image) {
+      return;
+    }
+
+    this.projectImageZoom = 1;
+    this.selectedProjectImage = {
+      src: card.image,
+      title: card.description
+    };
+    this.syncPageScrollLock();
+  }
+
+  openProjectCard(card: ProjectCard): void {
+    if (card.demoUrl) {
+      window.open(card.demoUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    this.openProjectImage(card);
+  }
+
+  closeProjectImage(): void {
+    this.selectedProjectImage = null;
+    this.projectImageZoom = 1;
+    this.stopProjectImageDrag();
+    this.syncPageScrollLock();
+  }
+
+  zoomProjectImage(delta: number): void {
+    this.projectImageZoom = Math.min(3, Math.max(0.6, Number((this.projectImageZoom + delta).toFixed(2))));
+  }
+
+  resetProjectImageZoom(): void {
+    this.projectImageZoom = 1;
+  }
+
+  getProjectImageZoomPercent(): number {
+    return Math.round(this.projectImageZoom * 100);
+  }
+
+  onProjectImageWheel(event: WheelEvent): void {
+    event.preventDefault();
+    this.zoomProjectImage(event.deltaY < 0 ? 0.12 : -0.12);
+  }
+
+  startProjectImageDrag(event: MouseEvent, viewport: HTMLElement): void {
+    if (event.button !== 0) {
+      return;
+    }
+
+    this.isProjectImageDragging = true;
+    this.projectImageDragStart = {
+      scrollLeft: viewport.scrollLeft,
+      scrollTop: viewport.scrollTop,
+      x: event.clientX,
+      y: event.clientY
+    };
+    event.preventDefault();
+  }
+
+  dragProjectImage(event: MouseEvent, viewport: HTMLElement): void {
+    if (!this.projectImageDragStart) {
+      return;
+    }
+
+    viewport.scrollLeft = this.projectImageDragStart.scrollLeft - (event.clientX - this.projectImageDragStart.x);
+    viewport.scrollTop = this.projectImageDragStart.scrollTop - (event.clientY - this.projectImageDragStart.y);
+    event.preventDefault();
+  }
+
+  stopProjectImageDrag(): void {
+    this.isProjectImageDragging = false;
+    this.projectImageDragStart = null;
+  }
+
+  isWorkExperienceExpanded(company: string): boolean {
+    return this.expandedWorkExperiences.has(company);
+  }
+
+  toggleWorkExperience(company: string): void {
+    if (this.expandedWorkExperiences.has(company)) {
+      this.expandedWorkExperiences.delete(company);
+      return;
+    }
+
+    this.expandedWorkExperiences.add(company);
+  }
+
+  private syncPageScrollLock(): void {
+    const hasOpenModal = this.isSkillsModalOpen || this.isContactModalOpen || this.selectedProject !== null || this.selectedProjectImage !== null;
+
+    document.documentElement.classList.toggle('modal-scroll-lock', hasOpenModal);
+    document.body.classList.toggle('modal-scroll-lock', hasOpenModal);
   }
 }
