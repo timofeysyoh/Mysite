@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 type ToolItem = {
   icon: string;
@@ -14,9 +15,16 @@ type ToolCategory = {
 };
 
 type ProjectCard = {
-  demoUrl?: string;
   description: string;
   image?: string;
+  linkUrl?: string;
+  mobileDemoUrl?: string;
+};
+
+type ProjectDemoModal = {
+  safeUrl: SafeResourceUrl;
+  title: string;
+  url: string;
 };
 
 type ProjectImageModal = {
@@ -39,16 +47,30 @@ type WorkExperienceItem = {
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  host: {
+    '[class.theme-light]': 'themeLightClass'
+  }
 })
 export class App {
+  private readonly sanitizer = inject(DomSanitizer);
+
+  get themeLightClass(): boolean {
+    return this.isLightThemePreview;
+  }
+
   isContactModalOpen = false;
-  isLightThemePreview = false;
+  isLightThemePreview = true;
   isProjectImageDragging = false;
   isSkillsModalOpen = false;
+  isSuccessNotificationOpen = false;
+  contactMessageLength = 0;
   projectImageZoom = 1;
+  selectedProjectDemo: ProjectDemoModal | null = null;
   selectedProjectImage: ProjectImageModal | null = null;
   selectedProject: ProjectItem | null = null;
+  private isPageScrollLocked = false;
+  private lockedPageScrollY = 0;
   private projectImageDragStart: { scrollLeft: number; scrollTop: number; x: number; y: number } | null = null;
   readonly projects: ProjectItem[] = [
     {
@@ -70,26 +92,46 @@ export class App {
           image: '/mysite.png'
         },
         {
-          description: 'Examples of interface designs for the JogiCards app',
+          description: 'Examples of UI design for a loyalty card storage app',
           image: '/JogiCards.png'
         },
         {
           description: 'Website interface design for my portfolio',
           image: '/portfoliofigma.png'
+        },
+        {
+          description: 'Screenshots of the app for Google Play',
+          image: '/Group%208.png'
         }
       ],
       title: 'UX & UI Design'
     },
-    { cards: [], title: 'Hybrid app' },
     {
       cards: [
         {
-          demoUrl: '/demos/portfolio-site/index.html',
-          description: 'Website using Angular framework for JavaScript'
+          description: 'Cross-platform loyalty card storage app JogiCards',
+          mobileDemoUrl: '/demos/jogicards/'
+        }
+      ],
+      title: 'Hybrid app'
+    },
+    {
+      cards: [
+        {
+          description: 'Website for the JogiCards app',
+          linkUrl: 'https://jogicards.web.app/index.html'
         },
         {
-          demoUrl: '/demos/project-workshop/index.html',
-          description: 'A site based on pure JavaScript without the use of components'
+          description: 'Website using Angular framework for JavaScript',
+          linkUrl: '/demos/portfolio-site/index.html'
+        },
+        {
+          description: 'A site based on pure JavaScript without the use of components',
+          linkUrl: '/demos/project-workshop/index.html'
+        },
+        {
+          description: 'Artificial intelligence in JogiChat chat',
+          linkUrl: 'https://jogichat.web.app/'
         }
       ],
       title: 'Website'
@@ -262,6 +304,10 @@ export class App {
     this.isLightThemePreview = !this.isLightThemePreview;
   }
 
+  openResume(): void {
+    window.open('/Resume%20EN.pdf', '_blank', 'noopener,noreferrer');
+  }
+
   openSkillsModal(): void {
     this.isSkillsModalOpen = true;
     this.syncPageScrollLock();
@@ -279,12 +325,26 @@ export class App {
 
   closeContactModal(): void {
     this.isContactModalOpen = false;
+    this.contactMessageLength = 0;
     this.syncPageScrollLock();
   }
 
   submitContactForm(event: SubmitEvent): void {
     event.preventDefault();
-    this.closeContactModal();
+    (event.target as HTMLFormElement).reset();
+    this.isContactModalOpen = false;
+    this.contactMessageLength = 0;
+    this.isSuccessNotificationOpen = true;
+    this.syncPageScrollLock();
+  }
+
+  closeSuccessNotification(): void {
+    this.isSuccessNotificationOpen = false;
+    this.syncPageScrollLock();
+  }
+
+  updateContactMessageLength(event: Event): void {
+    this.contactMessageLength = (event.target as HTMLTextAreaElement).value.length;
   }
 
   openProjectModal(project: ProjectItem): void {
@@ -310,13 +370,36 @@ export class App {
     this.syncPageScrollLock();
   }
 
+  openProjectDemo(card: ProjectCard): void {
+    if (!card.mobileDemoUrl) {
+      return;
+    }
+
+    this.selectedProjectDemo = {
+      safeUrl: this.sanitizer.bypassSecurityTrustResourceUrl(card.mobileDemoUrl),
+      title: card.description,
+      url: card.mobileDemoUrl
+    };
+    this.syncPageScrollLock();
+  }
+
   openProjectCard(card: ProjectCard): void {
-    if (card.demoUrl) {
-      window.open(card.demoUrl, '_blank', 'noopener,noreferrer');
+    if (card.mobileDemoUrl) {
+      this.openProjectDemo(card);
+      return;
+    }
+
+    if (card.linkUrl) {
+      window.open(card.linkUrl, '_blank', 'noopener,noreferrer');
       return;
     }
 
     this.openProjectImage(card);
+  }
+
+  closeProjectDemo(): void {
+    this.selectedProjectDemo = null;
+    this.syncPageScrollLock();
   }
 
   closeProjectImage(): void {
@@ -387,9 +470,38 @@ export class App {
   }
 
   private syncPageScrollLock(): void {
-    const hasOpenModal = this.isSkillsModalOpen || this.isContactModalOpen || this.selectedProject !== null || this.selectedProjectImage !== null;
+    const hasOpenModal =
+      this.isSkillsModalOpen ||
+      this.isContactModalOpen ||
+      this.isSuccessNotificationOpen ||
+      this.selectedProject !== null ||
+      this.selectedProjectDemo !== null ||
+      this.selectedProjectImage !== null;
 
-    document.documentElement.classList.toggle('modal-scroll-lock', hasOpenModal);
-    document.body.classList.toggle('modal-scroll-lock', hasOpenModal);
+    if (hasOpenModal && !this.isPageScrollLocked) {
+      const root = document.documentElement;
+      const body = document.body;
+      const scrollbarWidth = Math.max(0, window.innerWidth - root.clientWidth);
+
+      this.lockedPageScrollY = window.scrollY;
+      body.style.setProperty('--modal-scroll-y', `${this.lockedPageScrollY}px`);
+      body.style.setProperty('--modal-scrollbar-width', `${scrollbarWidth}px`);
+      root.classList.add('modal-scroll-lock');
+      body.classList.add('modal-scroll-lock');
+      this.isPageScrollLocked = true;
+      return;
+    }
+
+    if (!hasOpenModal && this.isPageScrollLocked) {
+      const body = document.body;
+      const scrollY = this.lockedPageScrollY;
+
+      document.documentElement.classList.remove('modal-scroll-lock');
+      body.classList.remove('modal-scroll-lock');
+      body.style.removeProperty('--modal-scroll-y');
+      body.style.removeProperty('--modal-scrollbar-width');
+      this.isPageScrollLocked = false;
+      window.scrollTo({ top: scrollY, left: 0, behavior: 'auto' });
+    }
   }
 }

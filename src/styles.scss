@@ -1,6 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 
-html.modal-scroll-lock,
-body.modal-scroll-lock {
+html.modal-scroll-lock {
   overflow: hidden;
+}
+
+body.modal-scroll-lock {
+  position: fixed;
+  top: calc(-1 * var(--modal-scroll-y, 0px));
+  right: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-right: var(--modal-scrollbar-width, 0px);
+  overscroll-behavior: none;
 }

@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "timofeysyoh-850dd",
+    "public": "hosting-copy",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
