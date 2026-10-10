@@ -122,14 +122,6 @@ export class App {
           linkUrl: 'https://jogicards.web.app/index.html'
         },
         {
-          description: 'Website using Angular framework for JavaScript',
-          linkUrl: '/demos/portfolio-site/index.html'
-        },
-        {
-          description: 'A site based on pure JavaScript without the use of components',
-          linkUrl: '/demos/project-workshop/index.html'
-        },
-        {
           description: 'Artificial intelligence in JogiChat chat',
           linkUrl: 'https://jogichat.web.app/'
         }

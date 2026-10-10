@@ -120,7 +120,7 @@ while (queue.length > 0) {
 }
 
 const index = await readFile(join(outDir, 'index.html'), 'utf8');
-const main = index.match(/\bsrc="([^"]*main-[^"]+\.js)"/)?.[1] ?? 'not found';
+const main = index.match(/\bsrc="([^"]*main-[^"?]+\.js)(?:\?[^"]*)?"/)?.[1] ?? 'not found';
 
 console.log(`Synced ${seen.size} hosting URLs into ${outDir}`);
 console.log(`Hosted main bundle: ${main}`);
